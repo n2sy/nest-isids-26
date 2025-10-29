@@ -1,0 +1,25 @@
+meta {
+  name: Add Task
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/tasks/add
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title" : "Poject 0",
+    "statut" : "to do",
+    "meteo" : "raining",
+    "prenom" : "nidhal"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

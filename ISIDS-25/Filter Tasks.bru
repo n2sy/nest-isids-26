@@ -1,0 +1,27 @@
+meta {
+  name: Filter Tasks
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:3000/tasks/filter?year=2025
+  body: json
+  auth: inherit
+}
+
+params:query {
+  year: 2025
+}
+
+body:json {
+  {
+    "title" : "Poject 0",
+    "statut" : "to do"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

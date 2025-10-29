@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "ISIDS-25",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
