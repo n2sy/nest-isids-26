@@ -7,11 +7,26 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TasksModule } from './tasks/tasks.module';
+import { BooksModule } from './books/books.module';
 import { FirstMiddleware } from './middlewares/first/first.middleware';
 import { SecondMiddleware } from './middlewares/second/second.middleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TasksModule],
+  imports: [
+    TasksModule,
+    BooksModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 8889,
+      username: 'root',
+      password: 'root',
+      database: 'isids26',
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

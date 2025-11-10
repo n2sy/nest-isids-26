@@ -1,26 +1,27 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   Req,
   Res,
   ValidationPipe,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { Task } from 'src/tasks/models/task.model';
+import { Task } from './models/task.model';
 import { TaskDTO } from './DTO/task.dto';
+import { TasksService } from './tasks.service';
 
 @Controller('tasks')
 export class TasksController {
-  allTasks: Task[] = [
-    new Task('1', 'project 0', 2025, 'todo', new Date(2023, 5, 4)),
-    new Task('2', 'project 1', 2026, 'in progress', new Date(2024, 6, 6)),
-    new Task('3', 'project 2', 2026, 'todo', new Date(2022, 3, 3)),
-  ];
+  constructor(private taskSer: TasksService) {}
+
+  //@Inject(TasksService) taskSer;
 
   // @Get('search/:id')
   // getTaskById(@Req() req : Request) {
@@ -38,57 +39,36 @@ export class TasksController {
     return res.json({ prenom: 'Nidhal', anneee: 2025 });
   }
 
-  @Get('filter')
-  filterTasksByYear(@Query('year') annee) {
-    let result = this.allTasks.filter((element) => element.year == annee);
-
-    // return "Je m'appelle Nidhal"
-    return { result };
-    // return res.json({ prenom: 'Nidhal', anneee: 2025 });
+  @Get('all') //GET nomdudomaine/task/all
+  getAllTasks(@Req() request: Request, @Res() response: Response) {
+    return this.taskSer.getAllTasks();
   }
 
-  @Get(':id')
-  getTaskById(@Param('id', ParseIntPipe) id) {
-    console.log(typeof id);
-    return { id };
+  @Get('stats')
+  nbreTask(
+    @Query('startYear', ParseIntPipe) y1,
+    @Query('endYear', ParseIntPipe) y2,
+  ) {
+    return this.taskSer.getNbTasks(y1, y2);
   }
-  // @Post('add')
-  // addTask(@Req() req : Request) {
-  //     this.allTasks.push(req.body);
-  //     return this.allTasks
-  // }
-  //   @Post('add')
-  //   addTask(@Body('title') tit, @Body('statut') st) {
-  //     console.log(tit, st);
 
-  //     //this.allTasks.push(b);
-  //     return this.allTasks;
-  //   }
+  @Get('search/:id')
+  getTaskById(@Param('id') taskId) {
+    return this.taskSer.getTaskById(taskId);
+  }
+
   @Post('add')
-  addTask(@Body(ValidationPipe) body: TaskDTO) {
-    console.log(body);
-    console.log(body instanceof TaskDTO);
+  addNewTask(@Body() body: TaskDTO, @Res() res: Response) {
+    return res.json(this.taskSer.addNewTask(body));
+  }
 
-    const { title, year, statut } = body;
-    let generatedId = crypto.randomUUID();
-    let d = new Date();
-    let newTask = new Task(generatedId, title, year, statut, d);
-    this.allTasks.push(newTask);
-    return this.allTasks;
+  @Put('edit/:id')
+  updateTask(@Body() uTask, @Param('id') id) {
+    return this.taskSer.updateTask(id, uTask);
+  }
+
+  @Delete('delete/:deleteId')
+  deleteTask(@Param('deleteId') id) {
+    return this.taskSer.deleteTask(id);
   }
 }
-
-//http://nomdedomaine/tasks/nidhal
-
-// function addition(a, b) {
-//   return a + b;
-// }
-
-// (a, b) => {
-//   return a + b;
-// };
-
-// (a, b) => a + b;
-
-// (a) => a + 10;
-// () => 20 + 10;
