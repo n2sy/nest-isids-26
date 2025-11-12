@@ -1,0 +1,25 @@
+meta {
+  name: Add Book
+  type: http
+  seq: 8
+}
+
+post {
+  url: http://localhost:3000/books/new
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title" : "book 1",
+    "year" : 2025,
+    "editor" : "ISIDS",
+    "image" : "avatar.jpg"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Edit Book
+  type: http
+  seq: 10
+}
+
+put {
+  url: http://localhost:3000/books/edit/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title" : "book 99",
+    "year" : 2030,
+    "editor" : "ISIDS",
+    "image" : "avatar.jpg"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

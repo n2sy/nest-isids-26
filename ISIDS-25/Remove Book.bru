@@ -1,0 +1,25 @@
+meta {
+  name: Remove Book
+  type: http
+  seq: 12
+}
+
+delete {
+  url: http://localhost:3000/books/delete/2
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title" : "book 99",
+    "year" : 2030,
+    "editor" : "ISIDS",
+    "image" : "avatar.jpg"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
