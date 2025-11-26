@@ -1,0 +1,16 @@
+meta {
+  name: Restore Book
+  type: http
+  seq: 14
+}
+
+patch {
+  url: http://localhost:3000/books/restore/3
+  body: json
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

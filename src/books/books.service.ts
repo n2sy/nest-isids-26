@@ -11,7 +11,8 @@ export class BooksService {
 
   async getAllBooks() {
     try {
-      let tab = await this.bookRepo.find();
+      let tab = await this.bookRepo.find(
+      );
       return { listeBooks: tab };
     } catch (err) {
       return { message: 'Problème avec TypeOrm' };
@@ -67,7 +68,60 @@ export class BooksService {
     });
     let response = await this.bookRepo.remove(selectedBook);
     return {
-      message: `Le livre ${response.title} a été supprimé avec succès`,
+        message: `Le livre ${response.title} a été supprimé avec succès`,
     };
+}
+
+async softDeleteBook(id) {
+    let reponse = await this.bookRepo.softDelete(id)
+    return reponse;
+}
+
+async restoreBook(id) {
+    let reponse = await this.bookRepo.restore(id);
+    return reponse;
+}
+
+ async recoverBook(selectedId) {
+    let selectedBook = await this.bookRepo.findOneBy({
+      id: selectedId,
+      
+    });
+    let response = await this.bookRepo.recover(selectedBook);
+    return {
+        message: `Le livre ${response.title} a été restauré avec succès`,
+    };
+}
+
+async softRemoveBook(selectedId) {
+      let selectedBook = await this.bookRepo.findOneBy({
+        id: selectedId,
+      });
+    let reponse = await this.bookRepo.softRemove(selectedBook)
+    return reponse;
   }
+  
+  async nbBooksPerYear() {
+    let qb = this.bookRepo.createQueryBuilder('book');
+    return qb.select('book.year, count(book.id) as NbBooks')
+    .groupBy('book.year')
+    .getRawMany()
+  }
+  
+  async nbBooksPerYearV2(y1, y2) {
+    let qb = this.bookRepo.createQueryBuilder('book');
+    return qb.select('book.year, count(book.id) as NbBooks')
+    .where('book.year >= :yearMin and book.year <= :yearMax', {yearMin : y1, yearMax : y2})
+    //.setParameters({yearMin : y1, yearMax : y2})
+    .groupBy('book.year')
+    .getRawMany()
+  }
+    
+    
+    
+    
+    
+    
+    
+  
 }

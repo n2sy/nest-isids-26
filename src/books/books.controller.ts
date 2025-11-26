@@ -6,8 +6,10 @@ import {
   Inject,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
+  Query,
   Req,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
@@ -53,6 +55,33 @@ export class BooksController {
   @Delete('delete/:id')
   async deleteBook(@Param('id', ParseIntPipe) id) {
     let response = await this.bookSer.deleteBook(id);
+    return response;
+  }
+  @Delete('softdelete/:id')
+  async softDeleteBook(@Param('id', ParseIntPipe) id) {
+    let response = await this.bookSer.softDeleteBook(id);
+    return response;
+  }
+  
+  @Patch('restore/:id')
+  async restoreBook(@Param('id', ParseIntPipe) id) {
+    let response = await this.bookSer.restoreBook(id);
+    return response;
+  }
+  @Patch('recover/:id')
+  async recoverBook(@Param('id', ParseIntPipe) id) {
+    let response = await this.bookSer.recoverBook(id);
+    return response;
+  }
+  
+  @Get('stats')
+  async nbreLivresParAnnee() {
+    let response = await this.bookSer.nbBooksPerYear();
+    return response;
+  }
+  @Get('stats/v2')
+  async nbreLivresParAnneeV2(@Query('year1') year1, @Query('year2') year2) {
+    let response = await this.bookSer.nbBooksPerYearV2(year1, year2);
     return response;
   }
 }
