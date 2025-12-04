@@ -33,7 +33,9 @@ export class BookEntity extends TimeStampISIDS {
     @Column()
     image : string;
     
-    @ManyToOne(type => AuthorEntity, author => author.id)
+    @ManyToOne(type => AuthorEntity, author => author.id,   {
+               // eager : true
+            })
     author ;
     
    

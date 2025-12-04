@@ -12,6 +12,9 @@ export class BooksService {
   async getAllBooks() {
     try {
       let tab = await this.bookRepo.find(
+        {
+            loadRelationIds : true
+        }
       );
       return { listeBooks: tab };
     } catch (err) {
@@ -36,6 +39,15 @@ export class BooksService {
         where: {
           id: selectedId,
         },
+        relations : {
+            author : true
+        },
+        select : {
+            author : {
+                prenom : true,
+                nom : true
+            }
+        }
       });
       if (!selectedBooks.length) throw new NotFoundException();
       else return selectedBooks;
