@@ -29,7 +29,8 @@ export class BooksService {
     // })
   }
 
-  addBook(newBook) {
+  addBook(newBook, idUser) {
+    newBook.user = idUser;
     return this.bookRepo.save(newBook);
   }
 

@@ -12,6 +12,7 @@ import { FirstMiddleware } from './middlewares/first/first.middleware';
 import { SecondMiddleware } from './middlewares/second/second.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -19,8 +20,8 @@ import { AuthModule } from './auth/auth.module';
     BooksModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 8889,
+      host: process.env.HOST,
+      port: Number(process.env.PORT),
       username: 'root',
       password: 'root',
       database: 'isids26',
@@ -28,6 +29,7 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true,
     }),
     AuthModule,
+    ConfigModule.forRoot()
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -42,4 +44,6 @@ export class AppModule implements NestModule {
       method: RequestMethod.GET,
     });
   }
+  
+  constructor(private configSer : ConfigService) {}
 }

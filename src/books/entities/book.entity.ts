@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { TimeStampISIDS } from "../shared/timestamp";
 import { AuthorEntity } from "./author.entity";
+import { UserEntity } from "src/auth/entities/user.entity";
 
 
 @Entity('livre')
@@ -37,6 +38,9 @@ export class BookEntity extends TimeStampISIDS {
                // eager : true
             })
     author ;
+    
+    @ManyToOne(type => UserEntity, user => user.id)
+    user;
     
    
     

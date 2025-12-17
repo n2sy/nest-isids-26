@@ -11,10 +11,16 @@ import {
   Put,
   Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
+import { JwtAuthGuard } from 'src/guards/jwt-auth/jwt-auth.guard';
+import { request } from 'express';
+import { IsAdminGuard } from 'src/guards/is-admin/is-admin.guard';
+
 
 @Controller('books')
+//@UseGuards(JwtAuthGuard)
 export class BooksController {
   @Inject(BooksService) bookSer: BooksService;
 
@@ -28,15 +34,19 @@ export class BooksController {
       console.log(err);
     }
   }
-
+  @UseGuards(JwtAuthGuard, IsAdminGuard)
+  //@UseGuards(IsAdminGuard)
   @Post('/new')
   async ajouterLivre(@Req() req: Request, @Body() body) {
-    let data = await this.bookSer.addBook(body);
+    let data = await this.bookSer.addBook(body, req["user"]["userId"]);
     return { data };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/search/:id')
-  async chercherBook(@Param('id', ParseIntPipe) id) {
+  async chercherBook(@Param('id', ParseIntPipe) id, @Req() request) {
+    console.log("ROLE", request.user.userRole);
+    
     return this.bookSer.getBookById(id);
   }
 
