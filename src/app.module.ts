@@ -22,11 +22,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       type: 'mysql',
       host: process.env.HOST,
       port: Number(process.env.PORT),
-      username: 'root',
-      password: 'root',
-      database: 'isids26',
+      username: 'rahma',
+      password: '12570',
+      database: 'library',
       autoLoadEntities: true,
       synchronize: true,
+      connectorPackage: 'mysql2', // nécessaire pour MySQL 9
     }),
     AuthModule,
     ConfigModule.forRoot()
