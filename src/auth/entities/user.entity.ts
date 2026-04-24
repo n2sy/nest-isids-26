@@ -4,16 +4,12 @@ import { Roles } from '../generics/role.enum';
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  id;
+  id: number;
 
-  @Column({
-    unique: true,
-  })
+  @Column({ unique: true })
   email: string;
 
-  @Column({
-    unique: true,
-  })
+  @Column({ unique: true })
   username: string;
 
   @Column()
@@ -23,11 +19,9 @@ export class UserEntity {
   salt: string;
   
   @Column({
-    type : "enum",
-    enum : Roles,
-    default : Roles.ROLE_USER
+    type: "enum",
+    enum: Roles,
+    default: Roles.ROLE_USER
   })
-  role ;
-  
-  
+  role: Roles;
 }
