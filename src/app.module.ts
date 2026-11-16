@@ -8,6 +8,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TasksModule } from './tasks/tasks.module';
 import { BooksModule } from './books/books.module';
+import { FavoritesModule } from './favorites/favorites.module';
 import { FirstMiddleware } from './middlewares/first/first.middleware';
 import { SecondMiddleware } from './middlewares/second/second.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -18,15 +19,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   imports: [
     TasksModule,
     BooksModule,
+    FavoritesModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.HOST,
       port: Number(process.env.PORT),
-      username: 'root',
-      password: 'root',
-      database: 'isids26',
+      username: 'rahma',
+      password: '12570',
+      database: 'library',
       autoLoadEntities: true,
       synchronize: true,
+      connectorPackage: 'mysql2', // nécessaire pour MySQL 9
     }),
     AuthModule,
     ConfigModule.forRoot()

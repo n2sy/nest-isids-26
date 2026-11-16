@@ -42,6 +42,8 @@ export class BookEntity extends TimeStampISIDS {
     @ManyToOne(type => UserEntity, user => user.id)
     user;
     
-   
+   @Column({ nullable: true })
+pdfUrl: string;
+
     
 }
