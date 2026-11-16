@@ -56,6 +56,27 @@ export class BooksService {
       return err;
     }
   }
+async searchBooks(title?: string, editor?: string, yearMin?: number, yearMax?: number) {
+  let qb = this.bookRepo.createQueryBuilder('book')
+    .leftJoinAndSelect('book.author', 'author')
+
+  if (title) {
+    qb = qb.andWhere(
+      '(book.title LIKE :title OR CONCAT(author.prenom, \' \', author.nom) LIKE :title OR book.editor LIKE :title)',
+      { title: `%${title}%` }
+    )
+  }
+
+  if (yearMin) {
+    qb = qb.andWhere('book.year >= :yearMin', { yearMin })
+  }
+
+  if (yearMax) {
+    qb = qb.andWhere('book.year <= :yearMax', { yearMax })
+  }
+
+  return qb.getMany()
+}
 
   async updateBook(selectedId, uBook) {
     let b = await this.bookRepo.preload({

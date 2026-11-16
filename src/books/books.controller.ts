@@ -52,6 +52,7 @@ export class BooksController {
       editor: body.editor,
       image: body.image,
       author: body.author || body.authorId, // Accepter les deux formats
+      pdfUrl: body.pdfUrl || null
     };
     
     console.log('Book data to save:', bookData);
@@ -66,6 +67,22 @@ export class BooksController {
     console.log("ROLE", request.user?.userRole);
     return this.bookSer.getBookById(id);
   }
+
+@UseGuards(JwtAuthGuard)
+@Get('search')
+async searchBooks(
+  @Query('title') title?: string,
+  @Query('yearMin') yearMin?: string,
+  @Query('yearMax') yearMax?: string,
+) {
+  return this.bookSer.searchBooks(
+    title,
+    undefined,
+    yearMin ? parseInt(yearMin) : undefined,
+    yearMax ? parseInt(yearMax) : undefined,
+  )
+}
+
 
   @UseGuards(JwtAuthGuard, IsAdminGuard)
   @Put('/edit/:id')
